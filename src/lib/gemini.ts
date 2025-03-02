@@ -119,29 +119,30 @@ export async function generateGeminiResponse(userMessage: string) {
    - Renowned faculty and research facilities
    - Strong international collaborations
 
-2. IIT Roorkee - Department of Architecture
+2. REVA University School of Architecture, Bangalore
+   - State-of-the-art infrastructure with modern design studios
+   - Industry-aligned curriculum with focus on practical training
+   - Strong emphasis on sustainable architecture
+   - Excellent placement record with leading firms
+   - Regular workshops and seminars by industry experts
+
+3. IIT Roorkee - Department of Architecture
    - Part of prestigious IIT system
    - Cutting-edge research facilities
    - Excellent placement record
    - Strong focus on technology integration
 
-3. CEPT University, Ahmedabad
+4. CEPT University, Ahmedabad
    - Pioneer in architectural education
    - Unique teaching methodology
    - Strong industry connections
    - Focus on sustainable design
 
-4. Sir JJ College of Architecture, Mumbai
+5. Sir JJ College of Architecture, Mumbai
    - Historic institution with rich legacy
    - Strong alumni network
    - Practical-oriented curriculum
-   - Industry-recognized programs
-
-5. Manipal School of Architecture and Planning
-   - International exposure
-   - Modern infrastructure
-   - Research-driven approach
-   - Strong industry partnerships`;
+   - Industry-recognized programs`;
       }
 
       return `Here are some of the top architecture colleges in Bangalore:
