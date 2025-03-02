@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import { useSearchParams } from "react-router-dom";
 import {
   BookOpen,
   Video,
   FileText,
   Download,
   Search,
-  Filter,
   ArrowRight,
   Star,
   Clock,
@@ -15,8 +15,16 @@ import {
 import Button from "../components/ui/Button";
 
 const ResourcesPage = () => {
+  const [searchParams] = useSearchParams();
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
+
+  useEffect(() => {
+    const category = searchParams.get("category");
+    if (category && ["videos", "pdfs", "practice"].includes(category)) {
+      setActiveCategory(category);
+    }
+  }, [searchParams]);
 
   const categories = [
     { id: "all", name: "All Resources", icon: <BookOpen /> },
@@ -31,99 +39,99 @@ const ResourcesPage = () => {
       title: "Fundamentals of Architectural Drawing",
       category: "videos",
       type: "Video Series",
+      duration: "4h 30m",
       rating: 4.8,
       views: 12500,
       image:
         "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://www.youtube.com/watch?v=wg7yT3mmCNk",
     },
     {
       id: 2,
       title: "NATA 2024 Complete Study Guide",
       category: "pdfs",
       type: "PDF",
+      pages: 120,
       rating: 4.9,
       downloads: 8750,
       image:
         "https://images.unsplash.com/photo-1497633762265-9d179a990aa6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://caad.ac.in/nata-study-materials-2024/",
     },
     {
       id: 3,
       title: "Mathematical Concepts for Architecture",
       category: "videos",
       type: "Video Series",
+      duration: "3h 45m",
       rating: 4.6,
       views: 9800,
       image:
         "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://www.youtube.com/watch?v=DeyzUysMLy0",
     },
     {
       id: 4,
       title: "NATA Previous Year Papers (2020-2023)",
       category: "practice",
       type: "PDF Bundle",
+      pages: 250,
       rating: 4.7,
       downloads: 15200,
       image:
         "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://admission.aglasem.com/nata-previous-year-question-paper/",
     },
     {
       id: 5,
       title: "Perspective Drawing Masterclass",
       category: "videos",
       type: "Video Course",
+      duration: "5h 15m",
       rating: 4.9,
       views: 7600,
       image:
         "https://images.unsplash.com/photo-1510915361894-db8b60106cb1?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://www.youtube.com/watch?v=fp8JDG9i1rE",
     },
     {
       id: 6,
       title: "Architectural Awareness Handbook",
       category: "pdfs",
       type: "PDF",
+      pages: 85,
       rating: 4.5,
       downloads: 6300,
       image:
         "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://denverarchitecture.org/wp-content/uploads/2018/01/Arch_Awareness.pdf",
     },
     {
       id: 7,
       title: "NATA Mock Test Series (Set of 10)",
       category: "practice",
       type: "Practice Tests",
+      questions: 1250,
       rating: 4.8,
       downloads: 5900,
       image:
         "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://www.embibe.com/exams/nata-mock-test/",
     },
     {
       id: 8,
       title: "Color Theory for Architectural Drawings",
       category: "videos",
       type: "Video Tutorial",
+      duration: "2h 20m",
       rating: 4.7,
       views: 4800,
       image:
         "https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://www.youtube.com/watch?v=w-hua5kWzU0",
     },
     {
       id: 9,
       title: "Spatial Visualization Practice Workbook",
       category: "pdfs",
       type: "PDF Workbook",
+      pages: 60,
       rating: 4.6,
       downloads: 4200,
       image:
         "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://www.colorado.edu/program/ide/sites/default/files/attached-files/sv_workshop2.pdf",
     },
   ];
 
@@ -132,6 +140,56 @@ const ResourcesPage = () => {
       (activeCategory === "all" || resource.category === activeCategory) &&
       resource.title.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  const handleGetBundle = () => {
+    window.open("https://www.toprankers.com/nata-mock-test-series", "_blank");
+  };
+
+  const handleWatchVideo = (resourceId: number) => {
+    switch (resourceId) {
+      case 1: // Fundamentals of Architectural Drawing
+        window.open("https://www.youtube.com/watch?v=wg7yT3mmCNk", "_blank");
+        break;
+      case 3: // Mathematical Concepts for Architecture
+        window.open("https://www.youtube.com/watch?v=DeyzUysMLy0", "_blank");
+        break;
+      case 5: // Perspective Drawing Masterclass
+        window.open("https://www.youtube.com/watch?v=fp8JDG9i1rE", "_blank");
+        break;
+      case 8: // Color Theory for Architectural Drawings
+        window.open("https://www.youtube.com/watch?v=w-hua5kWzU0", "_blank");
+        break;
+      case 7: // NATA Mock Test Series
+        window.open("https://www.embibe.com/exams/nata-mock-test/", "_blank");
+        break;
+    }
+  };
+
+  const handleViewResource = (resourceId: number) => {
+    switch (resourceId) {
+      case 2: // NATA 2024 Complete Study Guide
+        window.open("https://silica.co.in/nata-sample-papers", "_blank");
+        break;
+      case 4: // NATA Previous Year Papers (2020-2023)
+        window.open(
+          "https://www.collegebatch.com/exams/nata-important-downloads",
+          "_blank"
+        );
+        break;
+      case 6: // Architectural Awareness Handbook
+        window.open(
+          "https://denverarchitecture.org/wp-content/uploads/2018/01/Arch_Awareness.pdf",
+          "_blank"
+        );
+        break;
+      case 9: // Spatial Visualization Practice Workbook
+        window.open(
+          "https://www.colorado.edu/program/ide/sites/default/files/attached-files/sv_workshop2.pdf",
+          "_blank"
+        );
+        break;
+    }
+  };
 
   const featuredResource = {
     title: "Complete NATA 2025 Preparation Bundle",
@@ -151,9 +209,9 @@ const ResourcesPage = () => {
   };
 
   return (
-    <div className="min-h-screen pt-16 bg-cream">
+    <div className="min-h-screen bg-cream">
       {/* Header section */}
-      <div className="bg-deepNavy text-white relative overflow-hidden">
+      <div className="bg-deepNavy text-white relative overflow-hidden pt-16">
         {/* Background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-deepNavy via-deepNavy to-deepNavy/90" />
@@ -325,12 +383,7 @@ const ResourcesPage = () => {
               <Button
                 size="lg"
                 className="group relative overflow-hidden"
-                onClick={() =>
-                  window.open(
-                    "https://www.toprankers.com/nata-mock-test-series",
-                    "_blank"
-                  )
-                }
+                onClick={handleGetBundle}
               >
                 <span className="relative z-10 flex items-center">
                   Get Bundle
@@ -366,11 +419,10 @@ const ResourcesPage = () => {
           {filteredResources.map((resource, index) => (
             <motion.div
               key={resource.id}
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: index * 0.1, duration: 0.5 }}
-              whileHover={{ y: -10, transition: { duration: 0.3 } }}
-              className="bg-white rounded-xl shadow-lg overflow-hidden group"
+              transition={{ duration: 0.5 }}
+              className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow"
             >
               <div className="relative h-48 overflow-hidden">
                 <img
@@ -395,32 +447,35 @@ const ResourcesPage = () => {
                 </div>
 
                 <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-lg font-medium text-white mb-1 line-clamp-2">
+                  <h3 className="text-lg font-medium text-deepNavy mb-2">
                     {resource.title}
                   </h3>
 
-                  <div className="flex justify-between items-center">
+                  <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center">
-                      <Star
-                        size={14}
-                        className="text-mutedGold fill-mutedGold"
-                      />
-                      <span className="ml-1 text-white text-sm">
+                      <Star className="text-mutedGold w-4 h-4 mr-1" />
+                      <span className="text-sm font-medium">
                         {resource.rating}
                       </span>
                     </div>
 
-                    {resource.category === "videos" && (
-                      <div className="flex items-center text-white/80 text-sm">
-                        <Clock size={14} className="mr-1" />
+                    {resource.duration && (
+                      <div className="flex items-center text-charcoal/70 text-sm">
+                        <Clock size={16} className="mr-1" />
+                        {resource.duration}
+                      </div>
+                    )}
+
+                    {resource.views !== undefined && (
+                      <div className="flex items-center text-charcoal/70 text-sm">
+                        <Eye size={16} className="mr-1" />
                         {resource.views.toLocaleString()} views
                       </div>
                     )}
 
-                    {(resource.category === "pdfs" ||
-                      resource.category === "practice") && (
-                      <div className="flex items-center text-white/80 text-sm">
-                        <FileText size={14} className="mr-1" />
+                    {resource.downloads !== undefined && (
+                      <div className="flex items-center text-charcoal/70 text-sm">
+                        <Download size={16} className="mr-1" />
                         {resource.downloads.toLocaleString()} downloads
                       </div>
                     )}
@@ -428,54 +483,25 @@ const ResourcesPage = () => {
                 </div>
               </div>
 
-              <div className="p-6">
-                <div className="flex justify-between items-center mb-6">
-                  {resource.category === "videos" && (
-                    <div className="flex items-center text-charcoal/70 text-sm">
-                      <Eye size={16} className="mr-1" />
-                      {resource.views.toLocaleString()} views
-                    </div>
-                  )}
-
-                  {(resource.category === "pdfs" ||
-                    resource.category === "practice") && (
-                    <div className="flex items-center text-charcoal/70 text-sm">
-                      <Download size={16} className="mr-1" />
-                      {resource.downloads.toLocaleString()} downloads
-                    </div>
-                  )}
-
-                  <span className="text-sm font-medium text-sage">
-                    {resource.category === "videos"
-                      ? "Video"
-                      : resource.category === "pdfs"
-                      ? "PDF"
-                      : "Practice"}
-                  </span>
-                </div>
-
+              <div className="p-4">
                 <Button
                   className="w-full group relative overflow-hidden"
                   onClick={() =>
-                    resource.url && window.open(resource.url, "_blank")
+                    resource.category === "videos"
+                      ? handleWatchVideo(resource.id)
+                      : handleViewResource(resource.id)
                   }
                 >
                   <span className="relative z-10 flex items-center justify-center">
-                    {resource.category === "videos" ? "Watch Now" : "Download"}
+                    {resource.category === "videos"
+                      ? "Watch Now"
+                      : "View Resource"}
                     <ArrowRight
                       size={18}
                       className="ml-2 group-hover:translate-x-1 transition-transform"
                     />
                   </span>
-                  <span
-                    className={`absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 ${
-                      resource.category === "videos"
-                        ? "bg-gradient-to-r from-terracotta to-burntOrange"
-                        : resource.category === "pdfs"
-                        ? "bg-gradient-to-r from-sage to-forestGreen"
-                        : "bg-gradient-to-r from-mutedGold to-burntOrange"
-                    }`}
-                  />
+                  <span className="absolute inset-0 bg-gradient-to-r from-terracotta to-burntOrange opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </Button>
               </div>
             </motion.div>

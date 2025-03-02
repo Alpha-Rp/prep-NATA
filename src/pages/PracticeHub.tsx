@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   PenTool,
@@ -19,6 +19,45 @@ const PracticeHub = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
+  const handleStartPractice = (testId: number) => {
+    switch (testId) {
+      case 1:
+        window.open(
+          "https://helloartsy.com/perspective-drawing-exercises/",
+          "_blank"
+        );
+        break;
+      case 2:
+        window.open(
+          "https://architecturecourses.org/design/architectural-shapes-and-forms-how-they-define-our-spaces",
+          "_blank"
+        );
+        break;
+      case 3:
+        window.open(
+          "https://www.center.edu/MANUSCRIPT/06-GeometryPart1.pdf",
+          "_blank"
+        );
+        break;
+      case 4:
+        window.open(
+          "https://www.iscalepro.com/post/spatial-visualisation-reasoning-questions/",
+          "_blank"
+        );
+        break;
+      case 5:
+        window.open("https://www.toprankers.com/nata-exam-analysis", "_blank");
+        break;
+      case 6:
+        window.open("https://architectureaptitude.com/nata", "_blank");
+        break;
+    }
+  };
+
+  const handleExploreProgram = () => {
+    window.open("https://www.iarch.co.in/nata-jee-b-arch/", "_blank");
+  };
+
   const categories = [
     { id: "all", name: "All Categories", icon: <Compass /> },
     { id: "drawing", name: "Drawing & Sketching", icon: <PenTool /> },
@@ -38,7 +77,6 @@ const PracticeHub = () => {
       completionRate: 78,
       image:
         "https://images.unsplash.com/photo-1503387837-b154d5074bd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://helloartsy.com/perspective-drawing-exercises/",
     },
     {
       id: 2,
@@ -50,7 +88,6 @@ const PracticeHub = () => {
       completionRate: 65,
       image:
         "https://images.unsplash.com/photo-1487958449943-2429e8be8625?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://www.whereisthenorth.com/article/5-types-of-forms-in-architecture-with-examples",
     },
     {
       id: 3,
@@ -62,7 +99,6 @@ const PracticeHub = () => {
       completionRate: 42,
       image:
         "https://images.unsplash.com/photo-1509228468518-180dd4864904?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://scientiatutorials.in/mathematical-models-in-architecture-how-geometry-shapes-our-world/",
     },
     {
       id: 4,
@@ -74,7 +110,6 @@ const PracticeHub = () => {
       completionRate: 55,
       image:
         "https://images.unsplash.com/photo-1572297350242-837a28a42ec9?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://www.iscalepro.com/post/spatial-visualisation-reasoning-questions/",
     },
     {
       id: 5,
@@ -86,7 +121,6 @@ const PracticeHub = () => {
       completionRate: 32,
       image:
         "https://images.unsplash.com/photo-1586281380117-5a60ae2050cc?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://www.toprankers.com/nata-exam-analysis",
     },
     {
       id: 6,
@@ -98,7 +132,6 @@ const PracticeHub = () => {
       completionRate: 61,
       image:
         "https://images.unsplash.com/photo-1470058869958-2a77ade41c02?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
-      url: "https://mosaicdesigns.in/blog/free-nata-study-material",
     },
   ];
 
@@ -109,9 +142,9 @@ const PracticeHub = () => {
   );
 
   return (
-    <div className="min-h-screen pt-16 bg-cream">
+    <div className="min-h-screen bg-cream">
       {/* Header section */}
-      <div className="bg-deepNavy text-white relative overflow-hidden">
+      <div className="bg-deepNavy text-white relative overflow-hidden pt-16">
         {/* Background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-deepNavy via-deepNavy to-deepNavy/90" />
@@ -312,7 +345,7 @@ const PracticeHub = () => {
 
                 <Button
                   className="w-full group relative overflow-hidden"
-                  onClick={() => window.open(test.url, "_blank")}
+                  onClick={() => handleStartPractice(test.id)}
                 >
                   <span className="relative z-10 flex items-center justify-center">
                     Start Practice
@@ -412,12 +445,7 @@ const PracticeHub = () => {
               <Button
                 size="lg"
                 className="group relative overflow-hidden"
-                onClick={() =>
-                  window.open(
-                    "https://www.iarch.co.in/nata-coaching/",
-                    "_blank"
-                  )
-                }
+                onClick={handleExploreProgram}
               >
                 <span className="relative z-10 flex items-center">
                   Explore Program

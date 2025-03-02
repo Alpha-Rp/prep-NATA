@@ -1,16 +1,23 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
-import { Session, User } from '@supabase/supabase-js';
-import { supabase } from '../lib/supabase';
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { Session, User } from "@supabase/supabase-js";
+import { supabase } from "../lib/supabase";
 
 type AuthContextType = {
   session: Session | null;
   user: User | null;
   loading: boolean;
-  signUp: (email: string, password: string, userData?: Record<string, any>) => Promise<{
+  signUp: (
+    email: string,
+    password: string,
+    userData?: Record<string, any>
+  ) => Promise<{
     error: Error | null;
     data: any;
   }>;
-  signIn: (email: string, password: string) => Promise<{
+  signIn: (
+    email: string,
+    password: string
+  ) => Promise<{
     error: Error | null;
     data: any;
   }>;
@@ -19,7 +26,9 @@ type AuthContextType = {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,7 +42,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
 
     // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
       setSession(session);
       setUser(session?.user ?? null);
       setLoading(false);
@@ -44,16 +55,43 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, []);
 
-  const signUp = async (email: string, password: string, userData?: Record<string, any>) => {
+  const signUp = async (
+    email: string,
+    password: string,
+    userData?: Record<string, any>
+  ) => {
     try {
+      // Sign up the user with Supabase Auth
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          data: userData,
+          data: userData, // This stores the user metadata in the auth.users table
         },
       });
-      
+
+      // If signup is successful and we have user data, store additional user info in a custom profiles table
+      if (!error && data.user) {
+        // Create a profile entry in our custom profiles table
+        const { error: profileError } = await supabase.from("profiles").insert([
+          {
+            id: data.user.id,
+            email: email,
+            first_name: userData?.first_name || "",
+            last_name: userData?.last_name || "",
+            phone: userData?.phone || "",
+            college: userData?.college || "",
+            gender: userData?.gender || "",
+            created_at: new Date(),
+          },
+        ]);
+
+        if (profileError) {
+          console.error("Error creating user profile:", profileError);
+          return { data, error: profileError };
+        }
+      }
+
       return { data, error };
     } catch (error) {
       return { data: null, error: error as Error };
@@ -66,7 +104,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         email,
         password,
       });
-      
+
       return { data, error };
     } catch (error) {
       return { data: null, error: error as Error };
@@ -92,7 +130,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };

@@ -1,123 +1,266 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Compass, Mail, Phone, MapPin, ArrowRight, Users, BookOpen, Award, Calendar } from 'lucide-react';
-import Button from '../components/ui/Button';
+import React from "react";
+import { motion } from "framer-motion";
+import {
+  Compass,
+  Mail,
+  Phone,
+  MapPin,
+  ArrowRight,
+  Users,
+  BookOpen,
+  Award,
+  Calendar,
+  Lightbulb,
+  Building,
+  Palette,
+  Shield,
+  Sparkles,
+} from "lucide-react";
+import Button from "../components/ui/Button";
 
 const AboutPage = () => {
   const teamMembers = [
     {
-      name: 'Ar. Rajiv Mehta',
-      role: 'Founder & Lead Architect',
-      image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
-      bio: 'Rajiv is a practicing architect with over 15 years of experience and a passion for architectural education. He founded NATA Prep to help aspiring architects achieve their dreams.'
+      name: "Ar. Rajiv Mehta",
+      role: "Founder & Lead Architect",
+      image:
+        "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+      bio: "Rajiv is a practicing architect with over 15 years of experience and a passion for architectural education. He founded NATA Prep to help aspiring architects achieve their dreams.",
     },
     {
-      name: 'Dr. Priya Sharma',
-      role: 'Academic Director',
-      image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
-      bio: 'Priya holds a PhD in Architecture and has been teaching at prestigious architecture schools for over a decade. She oversees all academic content and curriculum development.'
+      name: "Dr. Priya Sharma",
+      role: "Academic Director",
+      image:
+        "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+      bio: "Priya holds a PhD in Architecture and has been teaching at prestigious architecture schools for over a decade. She oversees all academic content and curriculum development.",
     },
     {
-      name: 'Vikram Singh',
-      role: 'Technical Lead',
-      image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
-      bio: 'Vikram combines his architectural background with technical expertise to develop innovative digital tools that enhance the learning experience for NATA aspirants.'
+      name: "Vikram Singh",
+      role: "Technical Lead",
+      image:
+        "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+      bio: "Vikram combines his architectural background with technical expertise to develop innovative digital tools that enhance the learning experience for NATA aspirants.",
     },
     {
-      name: 'Aisha Khan',
-      role: 'Design Mentor',
-      image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
-      bio: 'Aisha specializes in architectural visualization and drawing techniques. She leads workshops and provides personalized feedback to help students improve their drawing skills.'
-    }, {
-      name: 'Arjun Patel',
-      role: 'Student Success Manager',
-      image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80',
-      bio: 'Arjun works closely with students to understand their needs and challenges. He coordinates mentorship programs and ensures students receive the support they need to succeed.'
+      name: "Aisha Khan",
+      role: "Design Mentor",
+      image:
+        "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&auto=format&fit=crop&w=400&q=80",
+      bio: "Aisha specializes in architectural visualization and drawing techniques. She leads workshops and provides personalized feedback to help students improve their drawing skills.",
     },
   ];
-  
+
   const milestones = [
     {
       year: 2020,
-      title: 'Foundation',
-      description: 'NATA Prep was founded with a mission to provide quality resources for architecture aspirants.'
+      title: "Foundation",
+      description:
+        "NATA Prep was founded with a mission to provide quality resources for architecture aspirants.",
     },
     {
       year: 2021,
-      title: 'Digital Platform Launch',
-      description: 'Launched our comprehensive online platform with interactive tools and resources.'
+      title: "Digital Platform Launch",
+      description:
+        "Launched our comprehensive online platform with interactive tools and resources.",
     },
     {
       year: 2022,
-      title: 'Community Growth',
-      description: 'Reached 5,000+ active students and expanded our team of mentors and educators.'
+      title: "Community Growth",
+      description:
+        "Reached 5,000+ active students and expanded our team of mentors and educators.",
     },
     {
       year: 2023,
-      title: 'Success Stories',
-      description: '92% of our students successfully cleared NATA, with many securing top ranks.'
+      title: "Success Stories",
+      description:
+        "92% of our students successfully cleared NATA, with many securing top ranks.",
     },
     {
       year: 2024,
-      title: 'Advanced Tools',
-      description: 'Introduced AI-powered drawing feedback and personalized learning paths.'
+      title: "Advanced Tools",
+      description:
+        "Introduced AI-powered drawing feedback and personalized learning paths.",
     },
     {
       year: 2025,
-      title: 'Nationwide Expansion',
-      description: 'Established partnerships with leading architecture colleges across India.'
+      title: "Nationwide Expansion",
+      description:
+        "Established partnerships with leading architecture colleges across India.",
     },
   ];
-  
+
   const stats = [
-    { value: '15,000+', label: 'Active Students', icon: <Users size={24} /> },
-    { value: '500+', label: 'Practice Resources', icon: <BookOpen size={24} /> },
-    { value: '92%', label: 'Success Rate', icon: <Award size={24} /> },
-    { value: '250+', label: 'Events Conducted', icon: <Calendar size={24} /> },
+    { value: "15,000+", label: "Active Students", icon: <Users size={24} /> },
+    {
+      value: "500+",
+      label: "Practice Resources",
+      icon: <BookOpen size={24} />,
+    },
+    { value: "92%", label: "Success Rate", icon: <Award size={24} /> },
+    { value: "250+", label: "Events Conducted", icon: <Calendar size={24} /> },
   ];
-  
+
+  const values = [
+    {
+      title: "Excellence",
+      description:
+        "We strive for excellence in everything we do, from content creation to student support.",
+      icon: <Award size={24} />,
+      color: "bg-terracotta/10 text-terracotta",
+    },
+    {
+      title: "Accessibility",
+      description:
+        "We believe quality education should be accessible to all, regardless of background or location.",
+      icon: <Users size={24} />,
+      color: "bg-sage/10 text-sage",
+    },
+    {
+      title: "Innovation",
+      description:
+        "We continuously innovate our teaching methods and tools to enhance the learning experience.",
+      icon: <Lightbulb size={24} />,
+      color: "bg-mutedGold/10 text-mutedGold",
+    },
+    {
+      title: "Community",
+      description:
+        "We foster a supportive community where students learn from each other and grow together.",
+      icon: <Building size={24} />,
+      color: "bg-deepNavy/10 text-deepNavy",
+    },
+  ];
+
+  // Component for Value Cards
+  const ValueCard = ({ icon, title, description, color, delay }) => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.5 }}
+      whileHover={{ y: -5, transition: { duration: 0.3 } }}
+      className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-all duration-300"
+    >
+      <div
+        className={`w-12 h-12 rounded-full ${color} flex items-center justify-center mb-4`}
+      >
+        {icon}
+      </div>
+      <h3 className="text-xl font-medium text-deepNavy mb-2">{title}</h3>
+      <p className="text-charcoal/80">{description}</p>
+    </motion.div>
+  );
+
+  // Component for Timeline Items
+  const TimelineItem = ({ year, title, description, isLeft, delay }) => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay, duration: 0.5 }}
+      className={`flex items-center mb-12 ${
+        isLeft ? "flex-row" : "flex-row-reverse"
+      }`}
+    >
+      <div className={`w-1/2 ${isLeft ? "pr-12 text-right" : "pl-12"}`}>
+        <div className="bg-white p-6 rounded-lg shadow-md hover:shadow-lg transition-all duration-300">
+          <div className="text-xl font-bold text-terracotta mb-2">{year}</div>
+          <h3 className="text-lg font-medium text-deepNavy mb-2">{title}</h3>
+          <p className="text-charcoal/80">{description}</p>
+        </div>
+      </div>
+
+      <div className="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-terracotta flex items-center justify-center text-white">
+        {year.toString().slice(-2)}
+      </div>
+
+      <div className="w-1/2"></div>
+    </motion.div>
+  );
+
+  // Component for Team Member Cards
+  const TeamMemberCard = ({ member, index }) => (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
+      whileHover={{ y: -10, transition: { duration: 0.3 } }}
+      className="bg-white rounded-xl shadow-md overflow-hidden text-center group"
+    >
+      <div className="relative h-64 overflow-hidden">
+        <img
+          src={member.image}
+          alt={member.name}
+          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-deepNavy/80 to-transparent" />
+      </div>
+
+      <div className="relative mt-[-40px] z-10 px-6 pb-6">
+        <div className="w-20 h-20 rounded-full border-4 border-white overflow-hidden mx-auto">
+          <img
+            src={member.image}
+            alt={member.name}
+            className="w-full h-full object-cover"
+          />
+        </div>
+
+        <h3 className="text-xl font-serif font-bold text-deepNavy mt-3 group-hover:text-terracotta transition-colors duration-300">
+          {member.name}
+        </h3>
+
+        <div className="text-terracotta mb-4">{member.role}</div>
+
+        <p className="text-charcoal/80 text-sm">{member.bio}</p>
+      </div>
+    </motion.div>
+  );
+
   return (
-    <div className="min-h-screen pt-16 bg-cream">
+    <div className="min-h-screen bg-cream">
       {/* Hero section */}
-      <div className="bg-deepNavy text-white relative overflow-hidden">
+      <motion.div className="bg-deepNavy text-white relative overflow-hidden pt-16">
         {/* Background elements */}
         <div className="absolute inset-0 overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-br from-deepNavy via-deepNavy to-deepNavy/90" />
-          
+
           {/* Blueprint grid */}
-          <div className="absolute inset-0 opacity-10"
+          <div
+            className="absolute inset-0 opacity-10"
             style={{
-              backgroundImage: 'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)',
-              backgroundSize: '30px 30px',
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)",
+              backgroundSize: "30px 30px",
             }}
           />
-          
+
           {/* Animated shapes */}
-          <motion.div 
-            animate={{ 
+          <motion.div
+            animate={{
               rotate: [0, 360],
             }}
-            transition={{ 
-              duration: 30, 
+            transition={{
+              duration: 30,
               repeat: Infinity,
-              ease: "linear"
+              ease: "linear",
             }}
             className="absolute -top-20 -right-20 w-80 h-80 border border-terracotta/20 rounded-full opacity-30"
           />
-          
-          <motion.div 
-            animate={{ 
+
+          <motion.div
+            animate={{
               rotate: [360, 0],
             }}
-            transition={{ 
-              duration: 40, 
+            transition={{
+              duration: 40,
               repeat: Infinity,
-              ease: "linear"
+              ease: "linear",
             }}
             className="absolute -bottom-40 -left-40 w-120 h-120 border border-sage/20 rounded-full opacity-20"
           />
         </div>
-        
+
         <div className="container mx-auto px-4 py-20 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <motion.div
@@ -129,31 +272,39 @@ const AboutPage = () => {
                 <Compass size={24} className="text-terracotta" />
                 <span className="font-serif text-xl">NATA Prep</span>
               </div>
-              
+
               <h1 className="text-4xl md:text-5xl font-serif font-bold mb-6">
                 Empowering Future Architects
               </h1>
-              
+
               <p className="text-xl text-white/80 mb-8 leading-relaxed">
-                We're on a mission to make quality architectural education accessible to all aspiring architects. Our comprehensive platform provides the tools, resources, and community support needed to excel in NATA and beyond.
+                We're on a mission to make quality architectural education
+                accessible to all aspiring architects. Our comprehensive
+                platform provides the tools, resources, and community support
+                needed to excel in NATA and beyond.
               </p>
-              
+
               <div className="flex flex-wrap gap-4">
                 <Button size="lg" className="group relative overflow-hidden">
                   <span className="relative z-10 flex items-center">
                     Our Story
-                    <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                    <ArrowRight
+                      size={18}
+                      className="ml-2 group-hover:translate-x-1 transition-transform"
+                    />
                   </span>
                   <span className="absolute inset-0 bg-gradient-to-r from-terracotta to-burntOrange opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </Button>
-                <Button variant="outline" size="lg" className="text-white border-white hover:bg-white/10">
-                  <span className="flex items-center">
-                    Meet Our Team
-                  </span>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="text-white border-white/30 hover:border-white"
+                >
+                  <span className="flex items-center">Meet Our Team</span>
                 </Button>
               </div>
             </motion.div>
-            
+
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -167,39 +318,119 @@ const AboutPage = () => {
                   className="rounded-lg object-cover w-full h-full"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-deepNavy/80 to-transparent rounded-lg" />
-                
+
                 {/* Floating elements */}
-                <div className="absolute -bottom-6 -left-6 bg-white rounded-lg shadow-lg p-4 max-w-xs backdrop-blur-sm bg-white/90">
+                <div className="absolute -bottom-6 -left-6 bg-white/10 backdrop-blur-sm rounded-lg shadow-lg p-4 max-w-xs text-white border border-white/20">
                   <div className="flex items-center space-x-3 mb-2">
                     <div className="w-8 h-8 rounded-full bg-terracotta flex items-center justify-center text-white">
                       <Award size={16} />
                     </div>
                     <div>
-                      <h4 className="font-medium text-deepNavy">Our Impact</h4>
-                      <p className="text-sm text-charcoal/70">Since 2020</p>
+                      <h4 className="font-medium">Our Impact</h4>
+                      <p className="text-sm text-white/70">Since 2020</p>
                     </div>
                   </div>
                   <div className="flex justify-between">
                     <div className="text-center">
-                      <div className="text-xl font-bold text-terracotta">15K+</div>
-                      <div className="text-xs text-charcoal/70">Students</div>
+                      <div className="text-xl font-bold text-terracotta">
+                        15K+
+                      </div>
+                      <div className="text-xs text-white/70">Students</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-xl font-bold text-terracotta">92%</div>
-                      <div className="text-xs text-charcoal/70">Success Rate</div>
+                      <div className="text-xl font-bold text-terracotta">
+                        92%
+                      </div>
+                      <div className="text-xs text-white/70">Success Rate</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-xl font-bold text-terracotta">50+</div>
-                      <div className="text-xs text-charcoal/70">Mentors</div>
+                      <div className="text-xl font-bold text-terracotta">
+                        50+
+                      </div>
+                      <div className="text-xs text-white/70">Mentors</div>
                     </div>
                   </div>
                 </div>
+
+                {/* Floating UI elements */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.2, duration: 0.8 }}
+                  className="absolute -bottom-6 -left-6 bg-white/10 backdrop-blur-sm rounded-lg shadow-lg p-4 max-w-xs text-white border border-white/20"
+                >
+                  <div className="flex items-center space-x-3 mb-2">
+                    <div className="w-3 h-3 rounded-full bg-terracotta" />
+                    <span className="font-medium">Our Impact</span>
+                  </div>
+                  <div className="w-full bg-white/20 rounded-full h-2 overflow-hidden">
+                    <motion.div
+                      initial={{ width: 0 }}
+                      animate={{ width: "92%" }}
+                      transition={{
+                        duration: 1.5,
+                        delay: 1.5,
+                        ease: "easeOut",
+                      }}
+                      className="bg-terracotta h-2 rounded-full"
+                    />
+                  </div>
+                  <div className="text-xs text-white/70 mt-1 text-right">
+                    92% Success Rate
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 1.4, duration: 0.8 }}
+                  className="absolute -top-6 -right-6 bg-white/10 backdrop-blur-sm rounded-lg shadow-lg p-4 text-white border border-white/20"
+                >
+                  <div className="flex items-center space-x-2">
+                    <motion.div
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        rotate: [0, 5, 0, -5, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                      }}
+                      className="w-8 h-8 rounded-full bg-sage flex items-center justify-center text-white font-bold"
+                    >
+                      <Sparkles size={16} />
+                    </motion.div>
+                    <span className="font-medium">Since 2020</span>
+                  </div>
+                </motion.div>
               </div>
             </motion.div>
           </div>
         </div>
-      </div>
-      
+
+        {/* Animated scroll indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2, duration: 1 }}
+          className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center"
+        >
+          <span className="text-white/60 text-sm mb-2">Scroll to explore</span>
+          <motion.div
+            animate={{ y: [0, 10, 0] }}
+            transition={{ duration: 1.5, repeat: Infinity }}
+            className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center"
+          >
+            <motion.div
+              animate={{ y: [0, 15, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity, delay: 0.2 }}
+              className="w-1.5 h-1.5 bg-white rounded-full mt-2"
+            />
+          </motion.div>
+        </motion.div>
+      </motion.div>
+
       {/* Mission & Vision */}
       <div className="container mx-auto px-4 py-20">
         <div className="max-w-3xl mx-auto text-center mb-16">
@@ -212,7 +443,7 @@ const AboutPage = () => {
           >
             Our Mission & Vision
           </motion.h2>
-          
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -220,33 +451,60 @@ const AboutPage = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="space-y-8"
           >
-            <div className="bg-white p-8 rounded-xl shadow-md">
-              <h3 className="text-xl font-medium text-terracotta mb-3">Our Mission</h3>
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+              <h3 className="text-xl font-medium text-terracotta mb-3 flex items-center justify-center">
+                <Compass size={20} className="mr-2" />
+                Our Mission
+              </h3>
               <p className="text-charcoal/80">
-                To democratize architectural education by providing accessible, high-quality resources and tools that empower students to excel in NATA and pursue their architectural dreams, regardless of their background or location.
+                To democratize architectural education by providing accessible,
+                high-quality resources and tools that empower students to excel
+                in NATA and pursue their architectural dreams, regardless of
+                their background or location.
               </p>
             </div>
-            
-            <div className="bg-white p-8 rounded-xl shadow-md">
-              <h3 className="text-xl font-medium text-sage mb-3">Our Vision</h3>
+
+            <div className="bg-white p-8 rounded-xl shadow-md hover:shadow-lg transition-shadow duration-300">
+              <h3 className="text-xl font-medium text-sage mb-3 flex items-center justify-center">
+                <Lightbulb size={20} className="mr-2" />
+                Our Vision
+              </h3>
               <p className="text-charcoal/80">
-                To build a vibrant community of architectural learners and professionals that fosters innovation, creativity, and excellence in architectural education, creating pathways for the next generation of architects to shape our built environment.
+                To build a vibrant community of architectural learners and
+                professionals that fosters innovation, creativity, and
+                excellence in architectural education, creating pathways for the
+                next generation of architects to shape our built environment.
               </p>
-            </div>
-            
-            <div className="bg-white p-8 rounded-xl shadow-md">
-              <h3 className="text-xl font-medium text-mutedGold mb-3">Our Values</h3>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
-                {['Excellence', 'Accessibility', 'Innovation', 'Community'].map((value) => (
-                  <div key={value} className="text-center p-3 bg-cream rounded-lg">
-                    <span className="font-medium text-deepNavy">{value}</span>
-                  </div>
-                ))}
-              </div>
             </div>
           </motion.div>
         </div>
-        
+
+        {/* Core Values */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="mb-20"
+        >
+          <h2 className="text-3xl font-serif font-bold text-deepNavy mb-8 text-center">
+            Our Core Values
+          </h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {values.map((value, index) => (
+              <ValueCard
+                key={index}
+                icon={value.icon}
+                title={value.title}
+                description={value.description}
+                color={value.color}
+                delay={index * 0.1}
+              />
+            ))}
+          </div>
+        </motion.div>
+
         {/* Stats */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -256,8 +514,10 @@ const AboutPage = () => {
           className="bg-white rounded-xl shadow-lg overflow-hidden mb-20"
         >
           <div className="p-8 md:p-12">
-            <h2 className="text-3xl font-serif font-bold text-deepNavy mb-12 text-center">Our Impact</h2>
-            
+            <h2 className="text-3xl font-serif font-bold text-deepNavy mb-12 text-center">
+              Our Impact
+            </h2>
+
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
                 <motion.div
@@ -271,14 +531,16 @@ const AboutPage = () => {
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-terracotta/20 text-terracotta mb-4">
                     {stat.icon}
                   </div>
-                  <div className="text-3xl font-bold text-deepNavy">{stat.value}</div>
+                  <div className="text-3xl font-bold text-deepNavy">
+                    {stat.value}
+                  </div>
                   <div className="text-charcoal/70">{stat.label}</div>
                 </motion.div>
               ))}
             </div>
           </div>
         </motion.div>
-        
+
         {/* Timeline */}
         <div className="mb-20">
           <motion.h2
@@ -290,42 +552,26 @@ const AboutPage = () => {
           >
             Our Journey
           </motion.h2>
-          
+
           <div className="relative">
             {/* Timeline line */}
             <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-terracotta/20 z-0"></div>
-            
+
             <div className="relative z-10">
               {milestones.map((milestone, index) => (
-                <motion.div
+                <TimelineItem
                   key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  className={`flex items-center mb-12 ${
-                    index % 2 === 0 ? 'flex-row' : 'flex-row-reverse'
-                  }`}
-                >
-                  <div className={`w-1/2 ${index % 2 === 0 ? 'pr-12 text-right' : 'pl-12'}`}>
-                    <div className="bg-white p-6 rounded-lg shadow-md">
-                      <div className="text-xl font-bold text-terracotta mb-2">{milestone.year}</div>
-                      <h3 className="text-lg font-medium text-deepNavy mb-2">{milestone.title}</h3>
-                      <p className="text-charcoal/80">{milestone.description}</p>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-terracotta flex items-center justify-center text-white">
-                    {milestone.year.toString().slice(-2)}
-                  </div>
-                  
-                  <div className="w-1/2"></div>
-                </motion.div>
+                  year={milestone.year}
+                  title={milestone.title}
+                  description={milestone.description}
+                  isLeft={index % 2 === 0}
+                  delay={index * 0.1}
+                />
               ))}
             </div>
           </div>
         </div>
-        
+
         {/* Team */}
         <div className="mb-20">
           <motion.h2
@@ -337,7 +583,7 @@ const AboutPage = () => {
           >
             Meet Our Team
           </motion.h2>
-          
+
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -345,53 +591,18 @@ const AboutPage = () => {
             transition={{ duration: 0.6, delay: 0.2 }}
             className="text-charcoal/80 text-center max-w-3xl mx-auto mb-12"
           >
-            Our team consists of experienced architects, educators, and technology experts who are passionate about architectural education and student success.
+            Our team consists of experienced architects, educators, and
+            technology experts who are passionate about architectural education
+            and student success.
           </motion.p>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {teamMembers.map((member, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: 0.2 + index * 0.1, duration: 0.5 }}
-                whileHover={{ y: -10, transition: { duration: 0.3 } }}
-                className="bg-white rounded-xl shadow-md overflow-hidden text-center group"
-              >
-                <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={member.image}
-                    alt={member.name}
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-deepNavy/80 to-transparent" />
-                </div>
-                
-                <div className="relative mt-[-40px] z-10 px-6 pb-6">
-                  <div className="w-20 h-20 rounded-full border-4 border-white overflow-hidden mx-auto">
-                    <img
-                      src={member.image}
-                      alt={member.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  
-                  <h3 className="text-xl font-serif font-bold text-deepNavy mt-3 group-hover:text-terracotta transition-colors duration-300">
-                    {member.name}
-                  </h3>
-                  
-                  <div className="text-terracotta mb-4">{member.role}</div>
-                  
-                  <p className="text-charcoal/80 text-sm">
-                    {member.bio}
-                  </p>
-                </div>
-              </motion.div>
+              <TeamMemberCard key={index} member={member} index={index} />
             ))}
           </div>
         </div>
-        
+
         {/* Contact */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -403,64 +614,101 @@ const AboutPage = () => {
           {/* Background elements */}
           <div className="absolute inset-0 overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-deepNavy via-deepNavy to-deepNavy/90" />
-            
+
             {/* Blueprint grid */}
-            <div className="absolute inset-0 opacity-10"
+            <div
+              className="absolute inset-0 opacity-10"
               style={{
-                backgroundImage: 'linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)',
-                backgroundSize: '30px 30px',
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,0.2) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.2) 1px, transparent 1px)",
+                backgroundSize: "30px 30px",
               }}
             />
+
+            {/* Animated shapes */}
+            <motion.div
+              animate={{
+                rotate: [0, 360],
+              }}
+              transition={{
+                duration: 30,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              className="absolute top-0 right-0 w-40 h-40 border border-terracotta/20 rounded-full opacity-30"
+            />
+
+            <motion.div
+              animate={{
+                rotate: [360, 0],
+              }}
+              transition={{
+                duration: 40,
+                repeat: Infinity,
+                ease: "linear",
+              }}
+              className="absolute -bottom-20 -left-20 w-60 h-60 border border-sage/20 rounded-full opacity-20"
+            />
           </div>
-          
+
           <div className="relative z-10 p-8 md:p-12">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
               <div>
-                <h2 className="text-3xl font-serif font-bold mb-6">Get in Touch</h2>
+                <h2 className="text-3xl font-serif font-bold mb-6">
+                  Get in Touch
+                </h2>
                 <p className="text-white/80 mb-8">
-                  Have questions about our platform or need assistance? We're here to help. Reach out to us through any of the following channels.
+                  Have questions about our platform or need assistance? We're
+                  here to help. Reach out to us through any of the following
+                  channels.
                 </p>
-                
+
                 <div className="space-y-6">
                   <div className="flex items-start">
                     <MapPin size={20} className="text-terracotta mt-1 mr-4" />
                     <div>
                       <h3 className="font-medium mb-1">Our Office</h3>
                       <p className="text-white/70">
-                        123 Architecture Avenue, Design District<br />
+                        123 Architecture Avenue, Design District
+                        <br />
                         New Delhi, 110001, India
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start">
                     <Mail size={20} className="text-terracotta mt-1 mr-4" />
                     <div>
                       <h3 className="font-medium mb-1">Email Us</h3>
                       <p className="text-white/70">
-                        contact@nataprep.com<br />
+                        contact@nataprep.com
+                        <br />
                         support@nataprep.com
                       </p>
                     </div>
                   </div>
-                  
+
                   <div className="flex items-start">
                     <Phone size={20} className="text-terracotta mt-1 mr-4" />
                     <div>
                       <h3 className="font-medium mb-1">Call Us</h3>
                       <p className="text-white/70">
-                        +91 123 456 7890<br />
+                        +91 123 456 7890
+                        <br />
                         +91 987 654 3210
                       </p>
                     </div>
                   </div>
                 </div>
               </div>
-              
+
               <div>
                 <form className="space-y-6">
                   <div>
-                    <label htmlFor="name" className="block text-sm font-medium mb-1">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium mb-1"
+                    >
                       Your Name
                     </label>
                     <input
@@ -470,9 +718,12 @@ const AboutPage = () => {
                       placeholder="John Doe"
                     />
                   </div>
-                  
+
                   <div>
-                    <label htmlFor="email" className="block text-sm font-medium mb-1">
+                    <label
+                      htmlFor="email"
+                      className="block text-sm font-medium mb-1"
+                    >
                       Email Address
                     </label>
                     <input
@@ -482,9 +733,12 @@ const AboutPage = () => {
                       placeholder="your@email.com"
                     />
                   </div>
-                  
+
                   <div>
-                    <label htmlFor="message" className="block text-sm font-medium mb-1">
+                    <label
+                      htmlFor="message"
+                      className="block text-sm font-medium mb-1"
+                    >
                       Your Message
                     </label>
                     <textarea
@@ -494,11 +748,14 @@ const AboutPage = () => {
                       placeholder="How can we help you?"
                     ></textarea>
                   </div>
-                  
+
                   <Button className="w-full group relative overflow-hidden">
                     <span className="relative z-10 flex items-center justify-center">
                       Send Message
-                      <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                      <ArrowRight
+                        size={18}
+                        className="ml-2 group-hover:translate-x-1 transition-transform"
+                      />
                     </span>
                     <span className="absolute inset-0 bg-gradient-to-r from-terracotta to-burntOrange opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                   </Button>

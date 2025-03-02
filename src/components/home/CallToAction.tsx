@@ -1,13 +1,29 @@
-import React, { useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import React, { useRef, useState, useEffect } from "react";
+import { motion, useInView, useMotionValue, useTransform } from "framer-motion";
 import { ArrowRight, CheckCircle, Sparkles } from "lucide-react";
 import Button from "../ui/Button";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
 const CallToAction = () => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
   const navigate = useNavigate();
+  const { user } = useAuth();
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+
+  // Mouse parallax effect
+  const handleMouseMove = e => {
+    const { clientX, clientY } = e;
+    const { left, top, width, height } =
+      e.currentTarget.getBoundingClientRect();
+
+    // Calculate normalized position (-1 to 1)
+    const x = ((clientX - left) / width) * 2 - 1;
+    const y = ((clientY - top) / height) * 2 - 1;
+
+    setMousePosition({ x, y });
+  };
 
   const benefits = [
     "Access to 500+ practice resources",
@@ -42,17 +58,40 @@ const CallToAction = () => {
   };
 
   const handleStartFreeTrial = () => {
-    window.open("https://www.nata.in/", "_blank");
+    if (user) {
+      navigate("/test-instructions");
+    } else {
+      navigate("/auth");
+    }
   };
 
   const handleExploreFeatures = () => {
     navigate("/resources");
   };
 
+  // Animated background elements
+  const [particles, setParticles] = useState([]);
+
+  useEffect(() => {
+    // Generate random particles
+    const newParticles = Array.from({ length: 50 }).map((_, i) => ({
+      id: i,
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      size: Math.random() * 4 + 1,
+      speed: Math.random() * 2 + 0.5,
+      color: i % 3 === 0 ? "#C66B3D" : i % 3 === 1 ? "#8BA793" : "#F5F2ED",
+      opacity: Math.random() * 0.5 + 0.1,
+    }));
+
+    setParticles(newParticles);
+  }, []);
+
   return (
     <section
       ref={ref}
       className="py-20 bg-deepNavy text-white relative overflow-hidden"
+      onMouseMove={handleMouseMove}
     >
       {/* Background elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -72,27 +111,72 @@ const CallToAction = () => {
         />
 
         {/* Animated particles */}
-        {Array.from({ length: 30 }).map((_, i) => (
+        {particles.map(particle => (
           <motion.div
-            key={i}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 0.4 }}
-            transition={{ delay: i * 0.1, duration: 1 }}
-            className="absolute w-1 h-1 bg-terracotta rounded-full"
+            key={particle.id}
+            className="absolute w-1 h-1 rounded-full"
             style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              animation: `float ${
-                Math.random() * 10 + 10
-              }s infinite alternate ease-in-out`,
+              left: `${particle.x}%`,
+              top: `${particle.y}%`,
+              width: `${particle.size}px`,
+              height: `${particle.size}px`,
+              backgroundColor: particle.color,
+              opacity: particle.opacity,
+            }}
+            animate={{
+              y: [0, -100],
+              opacity: [particle.opacity, 0],
+            }}
+            transition={{
+              duration: particle.speed * 10,
+              repeat: Infinity,
+              ease: "linear",
             }}
           />
         ))}
 
-        {/* Decorative shapes */}
-        <div className="absolute top-10 left-10 w-40 h-40 border border-terracotta/20 rounded-full" />
-        <div className="absolute bottom-10 right-10 w-60 h-60 border border-sage/20 rounded-full" />
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 border border-mutedGold/10 rounded-full" />
+        {/* Decorative shapes with parallax effect */}
+        <motion.div
+          className="absolute top-10 left-10 w-40 h-40 border border-terracotta/20 rounded-full opacity-30"
+          style={{
+            x: useTransform(() => -mousePosition.x * 20),
+            y: useTransform(() => -mousePosition.y * 20),
+          }}
+        />
+
+        <motion.div
+          className="absolute bottom-40 right-10 w-16 h-16 border border-sage/30 rounded-full"
+          style={{
+            x: useTransform(() => mousePosition.x * 30),
+            y: useTransform(() => mousePosition.y * 30),
+          }}
+        />
+
+        {/* Animated lines */}
+        <svg
+          className="absolute inset-0 w-full h-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <motion.path
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.2 }}
+            transition={{ duration: 2, delay: 0.5 }}
+            d="M0,50 C20,20 50,80 100,50"
+            stroke="#C66B3D"
+            strokeWidth="0.2"
+            fill="none"
+          />
+          <motion.path
+            initial={{ pathLength: 0, opacity: 0 }}
+            animate={{ pathLength: 1, opacity: 0.2 }}
+            transition={{ duration: 2, delay: 1 }}
+            d="M0,30 C30,10 70,90 100,70"
+            stroke="#8BA793"
+            strokeWidth="0.2"
+            fill="none"
+          />
+        </svg>
       </div>
 
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -176,7 +260,7 @@ const CallToAction = () => {
               onClick={handleStartFreeTrial}
             >
               <span className="relative z-10 flex items-center">
-                Click Here
+                Start Free Trial
                 <ArrowRight
                   size={18}
                   className="ml-2 group-hover:translate-x-1 transition-transform"
@@ -204,7 +288,7 @@ const CallToAction = () => {
             <Button
               variant="outline"
               size="lg"
-              className="group relative overflow-hidden"
+              className="group relative overflow-hidden text-white border-white/30 hover:border-white"
               onClick={handleExploreFeatures}
             >
               <span className="relative z-10">Explore Features</span>
@@ -212,8 +296,14 @@ const CallToAction = () => {
             </Button>
           </motion.div>
 
-          {/* Floating decorative elements */}
-          <div className="absolute top-10 right-10 w-20 h-20 opacity-20">
+          {/* Floating decorative elements with parallax effect */}
+          <motion.div
+            className="absolute top-10 right-10 w-20 h-20 opacity-20"
+            style={{
+              x: useTransform(() => mousePosition.x * 10),
+              y: useTransform(() => mousePosition.y * 10),
+            }}
+          >
             <motion.div
               animate={{
                 rotate: [0, 360],
@@ -225,8 +315,14 @@ const CallToAction = () => {
               }}
               className="w-full h-full border-2 border-dashed border-terracotta rounded-full"
             />
-          </div>
-          <div className="absolute bottom-10 left-10 w-16 h-16 opacity-20">
+          </motion.div>
+          <motion.div
+            className="absolute bottom-10 left-10 w-16 h-16 opacity-20"
+            style={{
+              x: useTransform(() => -mousePosition.x * 15),
+              y: useTransform(() => -mousePosition.y * 15),
+            }}
+          >
             <motion.div
               animate={{
                 rotate: [360, 0],
@@ -238,8 +334,44 @@ const CallToAction = () => {
               }}
               className="w-full h-full border-2 border-dashed border-sage rounded-full"
             />
-          </div>
+          </motion.div>
         </motion.div>
+      </div>
+
+      {/* Interactive floating elements */}
+      <div className="absolute inset-0 pointer-events-none">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute"
+            style={{
+              top: `${20 + i * 15}%`,
+              left: `${10 + i * 15}%`,
+              width: `${30 + i * 10}px`,
+              height: `${30 + i * 10}px`,
+              backgroundColor:
+                i % 2 === 0
+                  ? "rgba(198, 107, 61, 0.1)"
+                  : "rgba(139, 167, 147, 0.1)",
+              borderRadius: "50%",
+              x: useTransform(
+                () => mousePosition.x * (20 + i * 5) * (i % 2 === 0 ? 1 : -1)
+              ),
+              y: useTransform(
+                () => mousePosition.y * (20 + i * 5) * (i % 2 === 0 ? -1 : 1)
+              ),
+            }}
+            animate={{
+              scale: [1, 1.2, 1],
+              opacity: [0.3, 0.6, 0.3],
+            }}
+            transition={{
+              duration: 3 + i,
+              repeat: Infinity,
+              ease: "easeInOut",
+            }}
+          />
+        ))}
       </div>
     </section>
   );

@@ -16,8 +16,12 @@ import AboutPage from "./pages/AboutPage";
 import TestInstructionsPage from "./pages/TestInstructionsPage";
 import TestInterfacePage from "./pages/TestInterfacePage";
 import TestResultsPage from "./pages/TestResultsPage";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import TermsOfService from "./pages/TermsOfService";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import ChatbotIcon from "./components/chatbot/ChatbotIcon";
+import ScrollToTop from "./components/utils/ScrollToTop";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -52,6 +56,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
         <Router>
+          <ScrollToTop />
           <div className="min-h-screen flex flex-col overflow-hidden">
             <Navbar />
             <main className="flex-grow">
@@ -59,6 +64,11 @@ function App() {
                 <Routes>
                   <Route path="/" element={<HomePage />} />
                   <Route path="/auth" element={<AuthPage />} />
+                  <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                  <Route
+                    path="/terms-of-service"
+                    element={<TermsOfService />}
+                  />
                   <Route
                     path="/practice"
                     element={
@@ -129,6 +139,7 @@ function App() {
               </AnimatePresence>
             </main>
             <Footer />
+            <ChatbotIcon />
           </div>
         </Router>
       </AuthProvider>

@@ -9,13 +9,13 @@ import {
   Users,
   PenTool,
   User,
-  Sparkles,
   LogIn,
   UserPlus,
   LogOut,
+  Info,
 } from "lucide-react";
-import Button from "../ui/Button";
 import { useAuth } from "../../contexts/AuthContext";
+import { supabase } from "../../lib/supabase";
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -24,6 +24,7 @@ const Navbar = () => {
   const navigate = useNavigate();
   const userMenuRef = useRef<HTMLDivElement>(null);
   const { user, signOut } = useAuth();
+  const [userName, setUserName] = useState<string>("");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -50,10 +51,50 @@ const Navbar = () => {
     };
   }, []);
 
+  // Fetch user profile data when user is logged in
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      if (user) {
+        try {
+          const { data, error } = await supabase
+            .from("profiles")
+            .select("first_name, last_name")
+            .eq("id", user.id)
+            .single();
+
+          if (error) {
+            console.error("Error fetching user profile:", error);
+            return;
+          }
+
+          if (data) {
+            // Use first name if available, otherwise use email
+            if (data.first_name) {
+              setUserName(data.first_name);
+            } else {
+              // Fallback to email if name not available
+              setUserName(user.email?.split("@")[0] || "");
+            }
+          }
+        } catch (error) {
+          console.error("Error in profile fetch:", error);
+        }
+      }
+    };
+
+    fetchUserProfile();
+  }, [user]);
+
+  // Main navigation links (middle section)
   const navLinks = [
     { name: "Practice Hub", path: "/practice", icon: <PenTool size={18} /> },
     { name: "Resources", path: "/resources", icon: <BookOpen size={18} /> },
     { name: "Community", path: "/community", icon: <Users size={18} /> },
+  ];
+
+  // Right section links
+  const rightLinks = [
+    { name: "About", path: "/about", icon: <Info size={18} /> },
   ];
 
   const handleAuth = (isSignUp = false) => {
@@ -76,25 +117,34 @@ const Navbar = () => {
   return (
     <header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? "bg-white/90 backdrop-blur-md shadow-sm" : "bg-transparent"
+        isScrolled
+          ? "bg-white/90 backdrop-blur-md shadow-sm"
+          : "bg-transparent text-white"
       }`}
     >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20">
+          {/* Logo */}
           <Link to="/" className="flex items-center space-x-2 group">
             <motion.div
               whileHover={{ rotate: [0, -10, 10, -10, 0] }}
               transition={{ duration: 0.5 }}
             >
-              <Compass className="h-8 w-8 text-terracotta group-hover:text-deepNavy transition-colors duration-300" />
+              <Compass
+                className={`h-8 w-8 ${
+                  isScrolled ? "text-terracotta" : "text-terracotta"
+                } group-hover:text-deepNavy transition-colors duration-300`}
+              />
             </motion.div>
             <motion.span
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="font-serif font-bold text-xl text-deepNavy relative"
+              className={`font-serif font-bold text-xl ${
+                isScrolled ? "text-deepNavy" : "text-white"
+              } relative`}
             >
-              Prep NATA
+              NATA Prep
               <motion.span
                 initial={{ width: 0 }}
                 animate={{ width: "100%" }}
@@ -105,13 +155,15 @@ const Navbar = () => {
             </motion.span>
           </Link>
 
-          {/* Desktop Navigation */}
+          {/* Desktop Navigation - Center */}
           <nav className="hidden md:flex items-center space-x-8">
             {navLinks.map((link, index) => (
               <Link
                 key={link.name}
                 to={link.path}
-                className="group relative text-deepNavy hover:text-terracotta transition-colors duration-200 flex items-center space-x-1"
+                className={`group relative ${
+                  isScrolled ? "text-deepNavy" : "text-white"
+                } hover:text-terracotta transition-colors duration-200 flex items-center space-x-1`}
               >
                 <motion.div
                   initial={{ opacity: 0, y: -10 }}
@@ -131,7 +183,35 @@ const Navbar = () => {
             ))}
           </nav>
 
+          {/* Desktop Right Section - About and User */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* About link */}
+            {rightLinks.map((link, index) => (
+              <Link
+                key={link.name}
+                to={link.path}
+                className={`group relative ${
+                  isScrolled ? "text-deepNavy" : "text-white"
+                } hover:text-terracotta transition-colors duration-200 flex items-center space-x-1`}
+              >
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 + index * 0.1, duration: 0.5 }}
+                  className="flex items-center space-x-1"
+                >
+                  {link.icon}
+                  <span>{link.name}</span>
+                </motion.div>
+                <motion.span
+                  className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-terracotta to-sage"
+                  whileHover={{ width: "100%" }}
+                  transition={{ duration: 0.3 }}
+                />
+              </Link>
+            ))}
+
+            {/* User menu */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -141,11 +221,15 @@ const Navbar = () => {
             >
               <button
                 onClick={toggleUserMenu}
-                className="w-10 h-10 rounded-full bg-deepNavy/5 flex items-center justify-center hover:bg-deepNavy/10 transition-colors duration-300 group"
+                className={`w-10 h-10 rounded-full ${
+                  isScrolled ? "bg-deepNavy/5" : "bg-white/10"
+                } flex items-center justify-center hover:bg-deepNavy/10 transition-colors duration-300 group`}
               >
                 <User
                   size={20}
-                  className="text-deepNavy group-hover:text-terracotta transition-colors duration-300"
+                  className={`${
+                    isScrolled ? "text-deepNavy" : "text-white"
+                  } group-hover:text-terracotta transition-colors duration-300`}
                 />
               </button>
 
@@ -163,11 +247,8 @@ const Navbar = () => {
                       <>
                         <div className="p-4 border-b border-gray-100">
                           <h3 className="text-lg font-serif font-bold text-deepNavy">
-                            Welcome
+                            Welcome, {userName}
                           </h3>
-                          <p className="text-sm text-charcoal/70">
-                            {user.email}
-                          </p>
                         </div>
                         <div className="p-3 space-y-2">
                           <button
@@ -230,13 +311,18 @@ const Navbar = () => {
           >
             <button
               onClick={toggleUserMenu}
-              className="w-9 h-9 rounded-full bg-deepNavy/5 flex items-center justify-center hover:bg-deepNavy/10 transition-colors duration-300 mr-1"
+              className={`w-9 h-9 rounded-full ${
+                isScrolled ? "bg-deepNavy/5" : "bg-white/10"
+              } flex items-center justify-center hover:bg-deepNavy/10 transition-colors duration-300 mr-1`}
             >
-              <User size={18} className="text-deepNavy" />
+              <User
+                size={18}
+                className={isScrolled ? "text-deepNavy" : "text-white"}
+              />
             </button>
 
             <button
-              className="text-deepNavy"
+              className={isScrolled ? "text-deepNavy" : "text-white"}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -246,7 +332,61 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      <AnimatePresence></AnimatePresence>
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            transition={{ duration: 0.3 }}
+            className="md:hidden bg-white shadow-lg"
+          >
+            <div className="container mx-auto px-4 py-4">
+              <nav className="flex flex-col space-y-4">
+                {/* Combine all navigation links for mobile */}
+                {[...navLinks, ...rightLinks].map(link => (
+                  <Link
+                    key={link.name}
+                    to={link.path}
+                    className="flex items-center p-2 text-deepNavy hover:bg-deepNavy/5 rounded-lg transition-colors"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <span className="mr-3 text-terracotta">{link.icon}</span>
+                    <span>{link.name}</span>
+                  </Link>
+                ))}
+
+                {!user ? (
+                  <>
+                    <button
+                      onClick={() => handleAuth(false)}
+                      className="flex items-center p-2 text-deepNavy hover:bg-deepNavy/5 rounded-lg transition-colors"
+                    >
+                      <LogIn size={18} className="mr-3 text-terracotta" />
+                      <span>Sign In</span>
+                    </button>
+                    <button
+                      onClick={() => handleAuth(true)}
+                      className="flex items-center p-2 text-deepNavy hover:bg-deepNavy/5 rounded-lg transition-colors"
+                    >
+                      <UserPlus size={18} className="mr-3 text-sage" />
+                      <span>Create Account</span>
+                    </button>
+                  </>
+                ) : (
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center p-2 text-deepNavy hover:bg-deepNavy/5 rounded-lg transition-colors"
+                  >
+                    <LogOut size={18} className="mr-3 text-terracotta" />
+                    <span>Sign Out</span>
+                  </button>
+                )}
+              </nav>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };

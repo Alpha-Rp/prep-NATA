@@ -75,7 +75,7 @@ const Footer = () => {
               >
                 <Compass className="h-8 w-8 text-terracotta group-hover:text-sage transition-colors duration-300" />
               </motion.div>
-              <span className="font-serif font-bold text-xl">Prep NATA</span>
+              <span className="font-serif font-bold text-xl">NATA Prep</span>
             </div>
             <p className="text-cream/80 mb-6">
               Comprehensive preparation platform for the National Aptitude Test
@@ -120,7 +120,7 @@ const Footer = () => {
                 { name: "Practice Hub", path: "/practice" },
                 { name: "Resources", path: "/resources" },
                 { name: "Community", path: "/community" },
-                { name: "Profile", path: "/profile" },
+                { name: "About", path: "/about" },
               ].map((link, index) => (
                 <motion.li
                   key={index}
@@ -156,10 +156,10 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               {[
-                { name: "Study Materials", path: "/resources/study-materials" },
-                { name: "Video Lessons", path: "/resources/video-lessons" },
-                { name: "Practice Sets", path: "/resources/practice-sets" },
-                { name: "Exam Patterns", path: "/resources/exam-patterns" },
+                { name: "Study Materials", path: "/resources?category=pdfs" },
+                { name: "Video Lessons", path: "/resources?category=videos" },
+                { name: "Practice Sets", path: "/resources?category=practice" },
+                { name: "Exam Patterns", path: "/resources" },
                 { name: "FAQs", path: "/faq" },
               ].map((link, index) => (
                 <motion.li
@@ -259,20 +259,22 @@ const Footer = () => {
           <p className="text-cream/60 text-sm mb-4 md:mb-0">
             © {new Date().getFullYear()} NATA Prep. All rights reserved.
           </p>
+          <p className="text-cream/60 text-sm font-medium mb-4 md:mb-0">
+            Developed by team ALPHA
+          </p>
           <div className="flex space-x-6 text-sm">
-            {[
-              { name: "Privacy Policy", path: "/privacy-policy" },
-              { name: "Terms of Service", path: "/terms-of-service" },
-              { name: "Sitemap", path: "/sitemap" },
-            ].map((link, index) => (
-              <Link
-                key={index}
-                to={link.path}
-                className="text-cream/60 hover:text-terracotta transition-colors duration-200 hover:underline"
-              >
-                {link.name}
-              </Link>
-            ))}
+            <Link
+              to="/privacy-policy"
+              className="text-cream/60 hover:text-terracotta transition-colors duration-200 hover:underline"
+            >
+              Privacy Policy
+            </Link>
+            <Link
+              to="/terms-of-service"
+              className="text-cream/60 hover:text-terracotta transition-colors duration-200 hover:underline"
+            >
+              Terms of Service
+            </Link>
           </div>
         </motion.div>
       </div>
