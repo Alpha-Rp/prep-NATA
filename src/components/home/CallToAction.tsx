@@ -5,15 +5,26 @@ import Button from "../ui/Button";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
+interface Particle {
+  id: number;
+  x: number;
+  y: number;
+  size: number;
+  speed: number;
+  color: string;
+  opacity: number;
+}
+
 const CallToAction = () => {
-  const ref = useRef(null);
+  const ref = useRef<HTMLElement>(null);
   const isInView = useInView(ref, { once: true, amount: 0.2 });
   const navigate = useNavigate();
   const { user } = useAuth();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [particles, setParticles] = useState<Particle[]>([]);
 
   // Mouse parallax effect
-  const handleMouseMove = e => {
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const { clientX, clientY } = e;
     const { left, top, width, height } =
       e.currentTarget.getBoundingClientRect();
@@ -69,9 +80,6 @@ const CallToAction = () => {
     navigate("/resources");
   };
 
-  // Animated background elements
-  const [particles, setParticles] = useState([]);
-
   useEffect(() => {
     // Generate random particles
     const newParticles = Array.from({ length: 50 }).map((_, i) => ({
@@ -86,6 +94,15 @@ const CallToAction = () => {
 
     setParticles(newParticles);
   }, []);
+
+  // Create motion values for parallax effect
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+
+  useEffect(() => {
+    x.set(mousePosition.x * 20);
+    y.set(mousePosition.y * 20);
+  }, [mousePosition, x, y]);
 
   return (
     <section
@@ -138,17 +155,14 @@ const CallToAction = () => {
         {/* Decorative shapes with parallax effect */}
         <motion.div
           className="absolute top-10 left-10 w-40 h-40 border border-terracotta/20 rounded-full opacity-30"
-          style={{
-            x: useTransform(() => -mousePosition.x * 20),
-            y: useTransform(() => -mousePosition.y * 20),
-          }}
+          style={{ x, y }}
         />
 
         <motion.div
           className="absolute bottom-40 right-10 w-16 h-16 border border-sage/30 rounded-full"
           style={{
-            x: useTransform(() => mousePosition.x * 30),
-            y: useTransform(() => mousePosition.y * 30),
+            x: useTransform(x, value => value * 1.5),
+            y: useTransform(y, value => value * 1.5),
           }}
         />
 
@@ -252,12 +266,11 @@ const CallToAction = () => {
 
           <motion.div
             variants={itemVariants}
-            className="flex flex-col sm:flex-row justify-center gap-4"
+            className="flex flex-wrap justify-center gap-4"
           >
             <Button
-              size="lg"
-              className="group relative overflow-hidden"
               onClick={handleStartFreeTrial}
+              className="group relative overflow-hidden"
             >
               <span className="relative z-10 flex items-center">
                 Start Free Trial
@@ -267,111 +280,23 @@ const CallToAction = () => {
                 />
               </span>
               <span className="absolute inset-0 bg-gradient-to-r from-terracotta to-burntOrange opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-              {/* Animated glow effect */}
-              <motion.span
-                animate={{
-                  boxShadow: [
-                    "0 0 0 0 rgba(198, 107, 61, 0)",
-                    "0 0 0 10px rgba(198, 107, 61, 0.1)",
-                    "0 0 0 20px rgba(198, 107, 61, 0)",
-                  ],
-                }}
-                transition={{
-                  duration: 2,
-                  repeat: Infinity,
-                  repeatType: "loop",
-                }}
-                className="absolute inset-0 rounded-md"
-              />
             </Button>
+
             <Button
-              variant="outline"
-              size="lg"
-              className="group relative overflow-hidden text-white border-white/30 hover:border-white"
               onClick={handleExploreFeatures}
+              variant="outline"
+              className="group border-white text-white hover:bg-white/10"
             >
-              <span className="relative z-10">Explore Features</span>
-              <span className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 transition-opacity duration-300" />
+              <span className="flex items-center">
+                Explore Features
+                <ArrowRight
+                  size={18}
+                  className="ml-2 group-hover:translate-x-1 transition-transform"
+                />
+              </span>
             </Button>
-          </motion.div>
-
-          {/* Floating decorative elements with parallax effect */}
-          <motion.div
-            className="absolute top-10 right-10 w-20 h-20 opacity-20"
-            style={{
-              x: useTransform(() => mousePosition.x * 10),
-              y: useTransform(() => mousePosition.y * 10),
-            }}
-          >
-            <motion.div
-              animate={{
-                rotate: [0, 360],
-              }}
-              transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              className="w-full h-full border-2 border-dashed border-terracotta rounded-full"
-            />
-          </motion.div>
-          <motion.div
-            className="absolute bottom-10 left-10 w-16 h-16 opacity-20"
-            style={{
-              x: useTransform(() => -mousePosition.x * 15),
-              y: useTransform(() => -mousePosition.y * 15),
-            }}
-          >
-            <motion.div
-              animate={{
-                rotate: [360, 0],
-              }}
-              transition={{
-                duration: 15,
-                repeat: Infinity,
-                ease: "linear",
-              }}
-              className="w-full h-full border-2 border-dashed border-sage rounded-full"
-            />
           </motion.div>
         </motion.div>
-      </div>
-
-      {/* Interactive floating elements */}
-      <div className="absolute inset-0 pointer-events-none">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute"
-            style={{
-              top: `${20 + i * 15}%`,
-              left: `${10 + i * 15}%`,
-              width: `${30 + i * 10}px`,
-              height: `${30 + i * 10}px`,
-              backgroundColor:
-                i % 2 === 0
-                  ? "rgba(198, 107, 61, 0.1)"
-                  : "rgba(139, 167, 147, 0.1)",
-              borderRadius: "50%",
-              x: useTransform(
-                () => mousePosition.x * (20 + i * 5) * (i % 2 === 0 ? 1 : -1)
-              ),
-              y: useTransform(
-                () => mousePosition.y * (20 + i * 5) * (i % 2 === 0 ? -1 : 1)
-              ),
-            }}
-            animate={{
-              scale: [1, 1.2, 1],
-              opacity: [0.3, 0.6, 0.3],
-            }}
-            transition={{
-              duration: 3 + i,
-              repeat: Infinity,
-              ease: "easeInOut",
-            }}
-          />
-        ))}
       </div>
     </section>
   );

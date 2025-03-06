@@ -9,10 +9,23 @@ import {
   Search,
   ArrowRight,
   Star,
-  Clock,
   Eye,
 } from "lucide-react";
 import Button from "../components/ui/Button";
+
+interface Resource {
+  id: number;
+  title: string;
+  category: "videos" | "pdfs" | "practice";
+  type: string;
+  duration?: string;
+  rating: number;
+  views?: number;
+  downloads?: number;
+  pages?: number;
+  questions?: number;
+  image: string;
+}
 
 const ResourcesPage = () => {
   const [searchParams] = useSearchParams();
@@ -33,7 +46,7 @@ const ResourcesPage = () => {
     { id: "practice", name: "Practice Papers", icon: <FileText /> },
   ];
 
-  const resources = [
+  const resources: Resource[] = [
     {
       id: 1,
       title: "Fundamentals of Architectural Drawing",
@@ -416,7 +429,7 @@ const ResourcesPage = () => {
 
         {/* Resources grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredResources.map((resource, index) => (
+          {filteredResources.map((resource: Resource) => (
             <motion.div
               key={resource.id}
               initial={{ opacity: 0, y: 20 }}
@@ -434,12 +447,12 @@ const ResourcesPage = () => {
 
                 <div className="absolute top-4 left-4">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs text-white ${
+                    className={`px-3 py-1 rounded-full text-xs font-medium text-white ${
                       resource.category === "videos"
-                        ? "bg-terracotta/80"
+                        ? "bg-terracotta"
                         : resource.category === "pdfs"
-                        ? "bg-sage/80"
-                        : "bg-mutedGold/80"
+                        ? "bg-sage"
+                        : "bg-mutedGold"
                     } backdrop-blur-sm`}
                   >
                     {resource.type}
@@ -447,34 +460,27 @@ const ResourcesPage = () => {
                 </div>
 
                 <div className="absolute bottom-4 left-4 right-4">
-                  <h3 className="text-lg font-medium text-deepNavy mb-2">
+                  <h3 className="text-lg font-medium text-white mb-2">
                     {resource.title}
                   </h3>
 
                   <div className="flex items-center justify-between mb-4">
                     <div className="flex items-center">
                       <Star className="text-mutedGold w-4 h-4 mr-1" />
-                      <span className="text-sm font-medium">
+                      <span className="text-sm font-medium text-white">
                         {resource.rating}
                       </span>
                     </div>
 
-                    {resource.duration && (
-                      <div className="flex items-center text-charcoal/70 text-sm">
-                        <Clock size={16} className="mr-1" />
-                        {resource.duration}
-                      </div>
-                    )}
-
                     {resource.views !== undefined && (
-                      <div className="flex items-center text-charcoal/70 text-sm">
+                      <div className="flex items-center text-white text-sm">
                         <Eye size={16} className="mr-1" />
                         {resource.views.toLocaleString()} views
                       </div>
                     )}
 
                     {resource.downloads !== undefined && (
-                      <div className="flex items-center text-charcoal/70 text-sm">
+                      <div className="flex items-center text-white text-sm">
                         <Download size={16} className="mr-1" />
                         {resource.downloads.toLocaleString()} downloads
                       </div>

@@ -27,9 +27,13 @@ const TEST_START_TIME_KEY = "testStartTime";
 const TestInterfacePage = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const [testType, setTestType] = useState<string>("mcq");
+  const [testType, setTestType] = useState<string>(
+    location.state?.testType || "mcq"
+  );
   const [currentQuestion, setCurrentQuestion] = useState(1);
-  const [timeLeft, setTimeLeft] = useState(1800); // Default 30 minutes
+  const [timeLeft, setTimeLeft] = useState(
+    location.state?.testType === "sketching" ? 3600 : 1800
+  ); // 60 mins for sketching, 30 mins for MCQ
   const [selectedAnswers, setSelectedAnswers] = useState<
     Record<number, string>
   >({});
