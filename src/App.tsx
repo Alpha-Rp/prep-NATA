@@ -20,7 +20,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import TermsOfService from "./pages/TermsOfService";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
-import ChatbotIcon from "./components/chatbot/ChatbotIcon";
+import ChatbotIcon from "./components/chatbot/Chatboticon";
 import ScrollToTop from "./components/utils/ScrollToTop";
 
 // Create a client
