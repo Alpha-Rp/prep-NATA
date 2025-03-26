@@ -32,10 +32,7 @@ function App() {
     const lenis = new Lenis({
       duration: 0.8, // Reduced for better performance
       easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      direction: "vertical",
-      gestureDirection: "vertical",
-      smooth: true,
-      smoothTouch: false, // Disable on touch devices for better performance
+      wheelMultiplier: 1,
       touchMultiplier: 1.5,
       infinite: false,
     });

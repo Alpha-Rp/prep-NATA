@@ -12,6 +12,8 @@ import {
   Search,
   Filter,
   BookOpen,
+  Award,
+  BarChart2,
 } from "lucide-react";
 import Button from "../components/ui/Button";
 
@@ -109,7 +111,7 @@ const PracticeHub = () => {
       questions: 18,
       completionRate: 55,
       image:
-        "https://images.unsplash.com/photo-1572297350242-837a28a42ec9?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1518893494013-481c1d8ed3fd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80",
     },
     {
       id: 5,
