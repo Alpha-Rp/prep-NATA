@@ -260,7 +260,7 @@ const Footer = () => {
             © {new Date().getFullYear()} NATA Prep. All rights reserved.
           </p>
           <p className="text-cream/60 text-sm font-medium mb-4 md:mb-0">
-            Developed by team ALPHA
+            Developed by team NovaTech
           </p>
           <div className="flex space-x-6 text-sm">
             <Link
