@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { motion } from "framer-motion";
@@ -20,8 +20,85 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<AuthError | null>(null);
-  const { signIn } = useAuth();
+  const { signIn, user, loading: authLoading, isAdmin, signOut } = useAuth();
   const navigate = useNavigate();
+
+  // Check if user is already logged in
+  useEffect(() => {
+    console.log("Login component - Auth state:", {
+      user,
+      authLoading,
+      isAdmin,
+    });
+
+    // Only redirect if we have a user, auth is not loading, and we know the admin status
+    if (user && !authLoading) {
+      if (isAdmin) {
+        console.log("User is logged in and is admin, redirecting to dashboard");
+        navigate("/dashboard", { replace: true });
+      } else {
+        console.log("User is logged in but not admin");
+      }
+    }
+
+    // Safety timeout - if auth loading takes too long, force it to complete
+    const timer = setTimeout(() => {
+      if (authLoading) {
+        console.log("Login: Auth loading timeout reached");
+        // We can't directly modify authLoading, but we can refresh the page
+        // which will restart the auth process
+        window.location.reload();
+      }
+    }, 5000);
+
+    return () => clearTimeout(timer);
+  }, [user, authLoading, isAdmin, navigate]);
+
+  // If auth is still initializing, show loading state
+  if (authLoading) {
+    console.log("Auth is loading, showing loading spinner");
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-cream">
+        <div className="text-center">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-terracotta border-t-transparent mx-auto mb-4" />
+          <p className="text-deepNavy">Loading...</p>
+          <p className="text-sm text-gray-500 mt-2">
+            If this takes too long, try refreshing the page
+          </p>
+          <button
+            onClick={() => window.location.reload()}
+            className="mt-4 px-4 py-2 bg-terracotta text-white rounded hover:bg-terracotta/90"
+          >
+            Refresh
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  // If user is not admin, show error
+  if (user && !isAdmin) {
+    console.log("User is logged in but not admin, showing access denied");
+    return (
+      <div className="flex min-h-screen items-center justify-center bg-cream">
+        <div className="text-center p-8 bg-white rounded-lg shadow-lg">
+          <h2 className="text-2xl font-bold text-red-600 mb-4">
+            Access Denied
+          </h2>
+          <p className="text-gray-600">You do not have admin privileges.</p>
+          <button
+            onClick={async () => {
+              await signOut();
+              navigate("/login", { replace: true });
+            }}
+            className="mt-4 px-4 py-2 bg-terracotta text-white rounded hover:bg-terracotta/90"
+          >
+            Sign Out
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   const createAdminTable = async () => {
     const { error } = await supabase.rpc("create_admin_users_table");
@@ -63,15 +140,47 @@ export default function Login() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("Form submitted with email:", email);
     setLoading(true);
     setError(null);
 
     try {
       // First sign in with Supabase
-      await signIn(email, password);
+      console.log("Attempting to sign in...");
+      const { error: signInError } = await signIn(email, password);
+      console.log("Sign in result:", signInError ? "Error" : "Success");
+
+      if (signInError) {
+        console.log("Sign in error:", signInError);
+        // Display error message immediately instead of throwing
+        if (signInError.message === "Invalid login credentials") {
+          const errorObj = {
+            type: "invalid-credentials",
+            title: "Invalid Credentials",
+            message: "The email or password you entered is incorrect.",
+          };
+          setError(errorObj);
+          toast.error(errorObj.message);
+          setLoading(false);
+          return;
+        } else if (signInError.message.includes("Email not confirmed")) {
+          const errorObj = {
+            type: "not-verified",
+            title: "Email Not Verified",
+            message: "Please verify your email address before logging in.",
+          };
+          setError(errorObj);
+          toast.error(errorObj.message);
+          setLoading(false);
+          return;
+        } else {
+          throw signInError;
+        }
+      }
 
       // Only proceed with admin check for the specific email
       if (email !== ADMIN_EMAIL) {
+        console.log("Not an admin email");
         throw new Error("not_admin");
       }
 
@@ -96,37 +205,40 @@ export default function Login() {
       console.error("Login error:", error);
 
       if (error instanceof Error) {
+        let errorObj;
         if (error.message === "not_admin") {
-          setError({
+          errorObj = {
             type: "invalid-credentials",
             title: "Access Denied",
             message: "This email is not registered as an admin user.",
-          });
+          };
         } else if (error.message === "admin_creation_failed") {
-          setError({
+          errorObj = {
             type: "other",
             title: "Setup Error",
             message: "Failed to set up admin access. Please contact support.",
-          });
+          };
         } else if (error.message === "Invalid login credentials") {
-          setError({
+          errorObj = {
             type: "invalid-credentials",
             title: "Invalid Credentials",
             message: "The email or password you entered is incorrect.",
-          });
+          };
         } else if (error.message.includes("Email not confirmed")) {
-          setError({
+          errorObj = {
             type: "not-verified",
             title: "Email Not Verified",
             message: "Please verify your email address before logging in.",
-          });
+          };
         } else {
-          setError({
+          errorObj = {
             type: "other",
             title: "Authentication Error",
             message: "An error occurred during login. Please try again.",
-          });
+          };
         }
+        setError(errorObj);
+        toast.error(errorObj.message);
       }
     } finally {
       setLoading(false);
@@ -191,7 +303,7 @@ export default function Login() {
           <h1 className="text-2xl font-bold text-center text-deepNavy mb-2">
             NATA Admin Login
           </h1>
-          <p className="text-center text-text-secondary mb-8">
+          <p className="text-center text-text-secondary mb-6">
             Sign in to access the admin dashboard
           </p>
 
@@ -200,6 +312,7 @@ export default function Login() {
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               className="mb-6 p-4 rounded-lg bg-red-50 border border-red-200"
+              role="alert"
             >
               <h3 className="text-sm font-semibold text-red-800">
                 {error.title}

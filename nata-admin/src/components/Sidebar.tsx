@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   BookOpen,
@@ -22,6 +22,7 @@ const navItems = [
 
 export default function Sidebar() {
   const { signOut } = useAuth();
+  const navigate = useNavigate();
 
   return (
     <aside className="flex h-screen w-64 flex-col bg-white shadow-lg">
@@ -61,7 +62,10 @@ export default function Sidebar() {
       </nav>
 
       <motion.button
-        onClick={() => signOut()}
+        onClick={async () => {
+          await signOut();
+          navigate("/login", { replace: true });
+        }}
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
