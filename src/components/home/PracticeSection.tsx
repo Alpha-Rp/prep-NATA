@@ -194,7 +194,6 @@ const PracticeSection = () => {
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
                 viewport={{ once: true }}
-                transition={{ delay: 1.5 }}
                 className="absolute"
                 animate={{
                   x: [100, 200, 150, 250, 100],
@@ -204,6 +203,7 @@ const PracticeSection = () => {
                   duration: 10,
                   repeat: Infinity,
                   repeatType: "reverse",
+                  delay: 1.5
                 }}
               >
                 <div className="w-4 h-4 rounded-full border-2 border-white" />
