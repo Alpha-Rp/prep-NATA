@@ -1,4 +1,4 @@
-name: AWS Remote Auto Deploy
+name: AWS Remote Auto Deployment
 
 on:
   push:
